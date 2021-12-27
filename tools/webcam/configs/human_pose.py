@@ -4,7 +4,6 @@ runner = dict(
     name='Human Pose and Effects',
     camera_id=0,
     camera_fps=30,
-
     # Define nodes.
     # The configuration of a node usually includes:
     #   1. 'type': Node class name
@@ -21,12 +20,11 @@ runner = dict(
         dict(
             type='DetectorNode',
             name='Detector',
-            model_config='demo/mmdetection_cfg/'
-            'ssdlite_mobilenetv2_scratch_600e_coco.py',
-            model_checkpoint='https://download.openmmlab.com'
-            '/mmdetection/v2.0/ssd/'
-            'ssdlite_mobilenetv2_scratch_600e_coco/ssdlite_mobilenetv2_'
-            'scratch_600e_coco_20210629_110627-974d9307.pth',
+            model_config='demo/mmdetection_cfg/mask_rcnn_r50_fpn_2x_coco.py',
+            model_checkpoint='https://download.openmmlab.com/'
+            'mmdetection/v2.0/mask_rcnn/mask_rcnn_r50_fpn_2x_coco/'
+            'mask_rcnn_r50_fpn_2x_coco_bbox_mAP-0.392'
+            '__segm_mAP-0.354_20200505_003907-3e542a40.pth',
             input_buffer='_input_',  # `_input_` is a runner-reserved buffer
             output_buffer='det_result'),
         # 'TopDownPoseEstimatorNode':
