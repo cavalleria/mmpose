@@ -5,7 +5,21 @@ runner = dict(
     camera_id=0,
     camera_fps=30,
 
+    # Define user buffers
+    # Each user buffer is defined by buffer_name (str) or
+    # Tuple[buffer_name (str), buffer_size(int)]
+    # Note that there are also runner-reserved buffers which are not listed
+    # here. You can find them in the node configs below. For example:
+    #   - '_frame_': reserved buffer that stores input video frames
+    #   - '_input_': reserved buffer that stores video frames for model input
+    #   - '_display_': reserved buffer that stores output frames for display
+    user_buffers=[
+        'det_result', 'pose_result', 'frame', 'vis_pose', 'vis_sunglasses',
+        'vis_bugeye', 'vis', 'vis_bg'
+    ],
+
     # Define nodes.
+    #
     # The configuration of a node usually includes:
     #   1. 'type': Node class name
     #   2. 'name': Node name
@@ -21,12 +35,11 @@ runner = dict(
         dict(
             type='DetectorNode',
             name='Detector',
-            model_config='demo/mmdetection_cfg/'
-            'ssdlite_mobilenetv2_scratch_600e_coco.py',
-            model_checkpoint='https://download.openmmlab.com'
-            '/mmdetection/v2.0/ssd/'
-            'ssdlite_mobilenetv2_scratch_600e_coco/ssdlite_mobilenetv2_'
-            'scratch_600e_coco_20210629_110627-974d9307.pth',
+            model_config='demo/mmdetection_cfg/mask_rcnn_r50_fpn_2x_coco.py',
+            model_checkpoint='https://download.openmmlab.com/'
+            'mmdetection/v2.0/mask_rcnn/mask_rcnn_r50_fpn_2x_coco/'
+            'mask_rcnn_r50_fpn_2x_coco_bbox_mAP-0.392'
+            '__segm_mAP-0.354_20200505_003907-3e542a40.pth',
             input_buffer='_input_',  # `_input_` is a runner-reserved buffer
             output_buffer='det_result'),
         # 'TopDownPoseEstimatorNode':
@@ -64,41 +77,30 @@ runner = dict(
             enable_key='v',
             frame_buffer='frame',
             output_buffer='vis_pose'),
-        # 'SunglassesNode':
-        # This node draw the sunglasses effetc in the frame image.
-        # Pose results is needed.
+        # 'MattingNode':
+        # This node draw the matting visualization result in the frame image.
+        # mask results is needed.
         dict(
-            type='SunglassesNode',
-            name='Visualizer',
-            enable_key='s',
-            frame_buffer='vis_pose',
-            enable=False,
-            output_buffer='vis_sunglasses'),
-        # 'BugEyeNode':
-        # This node draw the bug-eye effetc in the frame image.
-        # Pose results is needed.
-        dict(
-            type='BugEyeNode',
+            type='BackgroundNode',
             name='Visualizer',
             enable_key='b',
-            frame_buffer='vis_sunglasses',
-            enable=False,
-            output_buffer='vis_bugeye'),
+            frame_buffer='vis_pose',
+            output_buffer='vis_bg',
+            cls_names=['person']),
         # 'BillboardNode':
         # This node show a billboard with given content, e.g. help
         # information.
         dict(
             type='BillboardNode',
-            name='Helper',
+            name='Help Information',
             enable_key='h',
-            frame_buffer='vis_bugeye',
+            frame_buffer='vis_bg',
             output_buffer='vis',
             content_lines=[
                 'This is a demo for pose visualization and simple image '
                 'effects. Have fun!', '', 'Hot-keys:',
                 '"v": Pose estimation result visualization',
-                '"s": Sunglasses effect B-)', '"b": Bug-eye effect 0_0',
-                '"h": Show help information',
+                '"b": Change background', '"h": Show help information',
                 '"m": Show diagnostic information', '"q": Exit'
             ],
         ),
