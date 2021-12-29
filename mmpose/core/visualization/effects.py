@@ -194,13 +194,13 @@ def apply_firecracker_effect(img,
 
     hm, wm = firecracker_img.shape[:2]
     # anchor points in the firecracker mask
-    pts_src = np.array([[0.3 * wm, 0.1 * hm], [0.3 * wm, 0.9 * hm],
-                        [0.7 * wm, 0.1 * hm], [0.7 * wm, 0.9 * hm]],
+    pts_src = np.array([[0. * wm, 0. * hm], [0. * wm, 1. * hm],
+                        [1. * wm, 0. * hm], [1. * wm, 1. * hm]],
                        dtype=np.float32)
 
     h, w = img.shape[:2]
     h_tar = h / 3
-    w_tar = h_tar / 2
+    w_tar = h_tar / hm * wm
 
     for pose in pose_results:
         kpts = pose['keypoints']

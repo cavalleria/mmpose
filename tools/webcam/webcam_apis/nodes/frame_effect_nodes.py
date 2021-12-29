@@ -362,7 +362,7 @@ class FirecrackerNode(BaseFrameEffectNode):
         if src_img_path is None:
             self.src_img_path = 'demo/resources/firecracker.gif'
         self.src_img = cv2.VideoCapture(self.src_img_path)
-        self.frame_list = []
+        # self.frame_list = []
         # ret, frame = self.src_img.read()
         # while frame is not None:
         #     self.frame_list.append(frame)
