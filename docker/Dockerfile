@@ -29,13 +29,15 @@ RUN pip install -r requirements.txt
 RUN pip install -r requirements/mminstall.txt
 RUN cd / && rm -rf /mmpose
 
-RUN git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime
-RUN sh ~/.vim_runtime/install_awesome_vimrc.sh
-
-RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.1.2/zsh-in-docker.sh)" -- \
-    -t robbyrussell \
-    -p git \
-    -p https://github.com/zsh-users/zsh-autosuggestions \
-    -p https://github.com/zsh-users/zsh-completions \
-    -p https://github.com/zsh-users/zsh-syntax-highlighting
-
+#RUN git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime
+#RUN sh ~/.vim_runtime/install_awesome_vimrc.sh
+#
+#RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.1.2/zsh-in-docker.sh)" -- \
+#    -t robbyrussell \
+#    -p git \
+#    -p https://github.com/zsh-users/zsh-autosuggestions \
+#    -p https://github.com/zsh-users/zsh-completions \
+#    -p https://github.com/zsh-users/zsh-syntax-highlighting
+RUN apt-get update && apt-get install -y zsh ctags
+RUn chsh -s /bin/zsh
+RUN sh -c "$(wget https://raw.githubusercontent.com/cavalleria/dotfiles/main/install.sh -O -)"
