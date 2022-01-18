@@ -39,5 +39,6 @@ RUN cd / && rm -rf /mmpose
 #    -p https://github.com/zsh-users/zsh-completions \
 #    -p https://github.com/zsh-users/zsh-syntax-highlighting
 RUN apt-get update && apt-get install -y zsh ctags
-RUn chsh -s /bin/zsh
+RUN chsh -s /bin/zsh
 RUN sh -c "$(wget https://raw.githubusercontent.com/cavalleria/dotfiles/main/install.sh -O -)"
+RUN vim +PlugInstall +qall > /dev/null
